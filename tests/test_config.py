@@ -116,12 +116,28 @@ class TestDenseMatchingConfig:
         config = DenseMatchingConfig()
         assert config.certainty_threshold == 0.5
         assert config.max_correspondences == 100000
+        assert config.roma_anchor_width == 512
+        assert config.roma_anchor_height == 512
 
     def test_custom_values(self):
         """Test custom values."""
-        config = DenseMatchingConfig(certainty_threshold=0.7, max_correspondences=5000)
+        config = DenseMatchingConfig(
+            certainty_threshold=0.7,
+            max_correspondences=5000,
+            roma_anchor_width=384,
+            roma_anchor_height=384,
+        )
         assert config.certainty_threshold == 0.7
         assert config.max_correspondences == 5000
+        assert config.roma_anchor_width == 384
+        assert config.roma_anchor_height == 384
+
+    def test_invalid_anchor_dim(self):
+        """Anchor dimensions must be positive multiples of 16."""
+        with pytest.raises(ValidationError):
+            DenseMatchingConfig(roma_anchor_width=500)
+        with pytest.raises(ValidationError):
+            DenseMatchingConfig(roma_anchor_height=0)
 
 
 class TestReconstructionConfig:

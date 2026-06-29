@@ -154,12 +154,29 @@ class DenseMatchingConfig(BaseModel):
     Attributes:
         certainty_threshold: Minimum overlap certainty for correspondence extraction.
         max_correspondences: Maximum number of correspondences to keep per pair.
+        roma_anchor_width: RoMa internal match resolution width (pixels). Lower
+            values reduce GPU memory at the cost of match detail. Must be a
+            positive multiple of 16 (DINOv3 ViT patch size).
+        roma_anchor_height: RoMa internal match resolution height (pixels). Same
+            constraints and tradeoff as roma_anchor_width.
     """
 
     model_config = ConfigDict(extra="allow")
 
     certainty_threshold: float = 0.5
     max_correspondences: int = 100000
+    roma_anchor_width: int = 512
+    roma_anchor_height: int = 512
+
+    @field_validator("roma_anchor_width", "roma_anchor_height")
+    @classmethod
+    def validate_anchor_dim(cls, v: int) -> int:
+        """Validate that anchor dimensions are positive multiples of 16."""
+        if v <= 0 or v % 16 != 0:
+            raise ValueError(
+                f"RoMa anchor dimensions must be positive multiples of 16, got {v}"
+            )
+        return v
 
     @model_validator(mode="after")
     def warn_extra_fields(self) -> "DenseMatchingConfig":

@@ -56,7 +56,11 @@ def run_roma_full_path(
         logger.info("Frame %d: running RoMa v2 dense matching (full mode)", frame_idx)
 
         # Step 1: Create matcher once
-        matcher = create_roma_matcher(device)
+        matcher = create_roma_matcher(
+            device,
+            config.dense_matching.roma_anchor_width,
+            config.dense_matching.roma_anchor_height,
+        )
 
         # Count total pairs for progress logging
         total_pairs = sum(len(srcs) for srcs in ctx.pairs.values())
