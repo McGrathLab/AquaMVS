@@ -102,6 +102,14 @@ def run_roma_full_path(
                 )
                 pairwise_depths[ref_name].append(depth_pairwise)
 
+                # Release the per-pair warp and defragment GPU memory before the
+                # next match. The matcher is reused across all pairs, so without
+                # this the allocator accumulates reserved-but-unallocated blocks
+                # and OOMs mid-loop on memory-constrained GPUs.
+                del warp_result
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+
         # Step 3: Delete matcher and free GPU memory before aggregation
         del matcher
         gc.collect()
