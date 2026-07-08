@@ -26,12 +26,31 @@ class TestDenseMatchingConfig:
         config = DenseMatchingConfig()
         assert config.certainty_threshold == 0.5
         assert config.max_correspondences == 100000
+        assert config.roma_anchor_width == 512
+        assert config.roma_anchor_height == 512
 
     def test_custom_values(self):
         """Test custom values."""
-        config = DenseMatchingConfig(certainty_threshold=0.7, max_correspondences=5000)
+        config = DenseMatchingConfig(
+            certainty_threshold=0.7,
+            max_correspondences=5000,
+            roma_anchor_width=384,
+            roma_anchor_height=384,
+        )
         assert config.certainty_threshold == 0.7
         assert config.max_correspondences == 5000
+        assert config.roma_anchor_width == 384
+        assert config.roma_anchor_height == 384
+
+
+def test_create_roma_matcher_passes_anchor_resolution():
+    """create_roma_matcher should forward anchor dims to RoMaV2.Cfg."""
+    with patch("aquamvs.features.roma.RoMaV2") as mock_roma:
+        create_roma_matcher(device="cpu", anchor_width=384, anchor_height=384)
+
+        mock_roma.Cfg.assert_called_once_with(
+            compile=False, anchor_width=384, anchor_height=384
+        )
 
 
 class TestExtractCorrespondences:

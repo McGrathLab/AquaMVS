@@ -13,17 +13,26 @@ from ..config import DenseMatchingConfig
 logger = logging.getLogger(__name__)
 
 
-def create_roma_matcher(device: str = "cpu") -> RoMaV2:
+def create_roma_matcher(
+    device: str = "cpu",
+    anchor_width: int = 512,
+    anchor_height: int = 512,
+) -> RoMaV2:
     """Create and initialize a RoMa v2 dense matcher.
 
     Args:
         device: Device to place the model on.
+        anchor_width: RoMa internal match resolution width (pixels). Lower values
+            reduce GPU memory at the cost of match detail.
+        anchor_height: RoMa internal match resolution height (pixels).
 
     Returns:
         Initialized RoMa v2 model in eval mode.
     """
     # Disable compilation to avoid Triton issues on Windows
-    cfg = RoMaV2.Cfg(compile=False)
+    cfg = RoMaV2.Cfg(
+        compile=False, anchor_width=anchor_width, anchor_height=anchor_height
+    )
     matcher = RoMaV2(cfg).eval()
     return matcher.to(device)
 
@@ -227,7 +236,9 @@ def match_pair_roma(
     """
     # Create matcher if not provided
     if matcher is None:
-        matcher = create_roma_matcher(device)
+        matcher = create_roma_matcher(
+            device, config.roma_anchor_width, config.roma_anchor_height
+        )
 
     # Run RoMa
     roma_result = _run_roma(img_ref, img_src, matcher)
@@ -313,7 +324,9 @@ def run_roma_all_pairs(
         Each dict contains "warp_AB", "overlap_AB", "H_ref", "W_ref", "H_src", "W_src".
     """
     # Create matcher once for all pairs
-    matcher = create_roma_matcher(device)
+    matcher = create_roma_matcher(
+        device, config.roma_anchor_width, config.roma_anchor_height
+    )
 
     # Count total pairs for progress logging
     total_pairs = sum(len(srcs) for srcs in pairs.values())
@@ -358,7 +371,9 @@ def match_all_pairs_roma(
         Each unordered pair {A, B} appears exactly once with canonical key (min(A,B), max(A,B)).
     """
     # Create matcher once for all pairs
-    matcher = create_roma_matcher(device)
+    matcher = create_roma_matcher(
+        device, config.roma_anchor_width, config.roma_anchor_height
+    )
 
     # Count unique pairs for progress logging
     unique_pairs: set[tuple[str, str]] = set()
