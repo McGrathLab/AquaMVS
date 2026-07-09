@@ -64,6 +64,10 @@ def pipeline_config(tmp_path):
             "cam1": "video1.mp4",
             "cam2": "video2.mp4",
         },
+        # These pipeline tests mock the sparse/full feature-matching stages, so
+        # pin the matcher to LightGlue. The default is RoMa, whose dense path is
+        # not mocked here.
+        matcher_type="lightglue",
         preprocessing=PreprocessingConfig(frame_start=0, frame_stop=10, frame_step=1),
         sparse_matching=SparseMatchingConfig(),
         reconstruction=ReconstructionConfig(),
@@ -526,6 +530,11 @@ def _make_ctx(config, calibration_data, masks=None):
     """
     if masks is None:
         masks = {}
+
+    # These pipeline tests mock the sparse/full feature-matching stages (see
+    # _mock_pipeline_stages), so pin the matcher to LightGlue. The default
+    # matcher is RoMa, whose dense path is not mocked here.
+    config.matcher_type = "lightglue"
 
     mock_proj_model = Mock()
     return PipelineContext(
