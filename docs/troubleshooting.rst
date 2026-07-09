@@ -6,7 +6,7 @@ Troubleshooting
 This page documents solutions to common issues encountered during installation,
 pipeline execution, notebook usage, and configuration. If your issue is not
 listed here, please open a GitHub issue at
-`https://github.com/tlancaster6/AquaMVS/issues <https://github.com/tlancaster6/AquaMVS/issues>`_.
+`https://github.com/McGrathLab/AquaMVS/issues <https://github.com/McGrathLab/AquaMVS/issues>`_.
 
 .. contents:: Contents
    :local:
@@ -40,7 +40,7 @@ LightGlue or RoMa import errors
    directly from their repositories::
 
        pip install git+https://github.com/cvg/LightGlue.git@edb2b83
-       pip install git+https://github.com/tlancaster6/RoMaV2.git
+       pip install git+https://github.com/Parskatt/RoMaV2.git
 
    Both commands require git to be installed and network access to GitHub.
 
@@ -139,7 +139,7 @@ ModuleNotFoundError in Colab
 
        !pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121 -q
        !pip install git+https://github.com/cvg/LightGlue.git@edb2b83 -q
-       !pip install git+https://github.com/tlancaster6/RoMaV2.git -q
+       !pip install git+https://github.com/Parskatt/RoMaV2.git -q
        !pip install aquamvs -q
 
    After running the installation cell, restart the Colab runtime
@@ -154,7 +154,7 @@ Dataset download fails
        wget https://zenodo.org/records/18702024/files/aquamvs-example-dataset.zip
 
    If the URL returns a 404 error, check the
-   `GitHub Releases page <https://github.com/tlancaster6/AquaMVS/releases>`_
+   `GitHub Releases page <https://github.com/McGrathLab/AquaMVS/releases>`_
    for the current download URL — the release tag may have changed.
 
 Open3D visualization fails headless

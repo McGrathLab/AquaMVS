@@ -49,12 +49,12 @@ AquaMVS depends on two libraries that are not available on PyPI and must be inst
 .. code-block:: bash
 
    pip install git+https://github.com/cvg/LightGlue.git@edb2b83
-   pip install git+https://github.com/tlancaster6/RoMaV2.git@3862b19d5880cd7d690b544d27f30bb88e7d8fa4
+   pip install git+https://github.com/Parskatt/RoMaV2.git@95c9968145c8906b7b59383258e9f73b02853d89
 
 **Why git dependencies?**
 
 - **LightGlue**: Not yet published to PyPI by upstream maintainers
-- **RoMa v2**: Uses a fork with a dataclasses metadata bugfix (PR submitted upstream)
+- **RoMa v2**: Not yet published to PyPI; pinned to an upstream commit that includes the dataclasses metadata fix
 
 Install AquaMVS
 ---------------
@@ -69,7 +69,7 @@ Install AquaMVS
 
 .. code-block:: bash
 
-   git clone https://github.com/tlancaster6/AquaMVS.git
+   git clone https://github.com/McGrathLab/AquaMVS.git
    cd AquaMVS
    pip install -e ".[dev]"
 

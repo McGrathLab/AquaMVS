@@ -25,7 +25,7 @@ pip install aquamvs
 
 # Install optional dependencies
 pip install git+https://github.com/cvg/LightGlue.git@edb2b83
-pip install git+https://github.com/tlancaster6/RoMaV2.git
+pip install git+https://github.com/Parskatt/RoMaV2.git
 ```
 
 See the [Installation Guide](installation.rst) for detailed instructions.

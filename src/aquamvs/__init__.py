@@ -20,7 +20,7 @@ if find_spec("lightglue") is None:
 if find_spec("romav2") is None:
     raise ImportError(
         "RoMa v2 is required but not installed. "
-        "Install from git: pip install git+https://github.com/tlancaster6/RoMaV2.git"
+        "Install from git: pip install git+https://github.com/Parskatt/RoMaV2.git"
     )
 
 from .calibration import (

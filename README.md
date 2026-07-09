@@ -7,7 +7,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/aquamvs)](https://pypi.org/project/aquamvs/)
 [![Python](https://img.shields.io/pypi/pyversions/aquamvs)](https://pypi.org/project/aquamvs/)
-[![CI](https://github.com/tlancaster6/AquaMVS/actions/workflows/test.yml/badge.svg)](https://github.com/tlancaster6/AquaMVS/actions/workflows/test.yml)
+[![CI](https://github.com/McGrathLab/AquaMVS/actions/workflows/test.yml/badge.svg)](https://github.com/McGrathLab/AquaMVS/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Dataset DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18702024.svg)](https://doi.org/10.5281/zenodo.18702024)
 
@@ -77,7 +77,7 @@ If you use AquaMVS in your research, please cite:
 
 ```
 Lancaster, T. (2026). AquaMVS: Multi-view stereo reconstruction with refractive geometry.
-GitHub: https://github.com/tlancaster6/AquaMVS
+GitHub: https://github.com/McGrathLab/AquaMVS
 Example dataset: https://doi.org/10.5281/zenodo.18702024
 ```
 

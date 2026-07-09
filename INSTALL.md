@@ -47,7 +47,7 @@ pip install aquamvs
 
 **Development install (current):**
 ```bash
-git clone https://github.com/tlancaster6/AquaMVS.git
+git clone https://github.com/McGrathLab/AquaMVS.git
 cd AquaMVS
 pip install -e ".[dev]"
 ```

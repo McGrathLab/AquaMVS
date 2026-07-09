@@ -55,10 +55,10 @@ dev = [
 ]
 
 [project.urls]
-Repository = "https://github.com/tlancaster6/AquaMVS"
+Repository = "https://github.com/McGrathLab/AquaMVS"
 Documentation = "https://aquamvs.readthedocs.io/"
-"Bug Tracker" = "https://github.com/tlancaster6/AquaMVS/issues"
-Changelog = "https://github.com/tlancaster6/AquaMVS/blob/main/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/McGrathLab/AquaMVS/issues"
+Changelog = "https://github.com/McGrathLab/AquaMVS/blob/main/CHANGELOG.md"
 
 [project.scripts]
 aquamvs = "aquamvs.cli:main"

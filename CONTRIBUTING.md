@@ -6,7 +6,7 @@ Thank you for your interest in contributing to AquaMVS. This guide will help you
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/tlancaster6/AquaMVS.git
+   git clone https://github.com/McGrathLab/AquaMVS.git
    cd AquaMVS
    ```
 
