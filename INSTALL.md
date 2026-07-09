@@ -28,12 +28,13 @@ pip install -r requirements-prereqs.txt
 **Manual install:**
 ```bash
 pip install git+https://github.com/cvg/LightGlue.git@edb2b83
-pip install git+https://github.com/tlancaster6/RoMaV2.git@3862b19d5880cd7d690b544d27f30bb88e7d8fa4
+pip install git+https://github.com/Parskatt/RoMaV2.git@95c9968145c8906b7b59383258e9f73b02853d89
 ```
 
 Notes:
 - LightGlue is pinned to commit `edb2b83` (v0.2 release)
-- RoMa v2 uses a fork with a dataclasses metadata bug fix (PR submitted upstream)
+- RoMa v2 is pinned to an upstream commit (`95c9968`) that includes the
+  dataclasses metadata fix; the earlier fork is no longer needed
 
 ## 3. Install AquaMVS
 

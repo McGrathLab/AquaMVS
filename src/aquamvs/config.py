@@ -124,7 +124,7 @@ class SparseMatchingConfig(BaseModel):
     model_config = ConfigDict(extra="allow")
 
     # Feature extraction
-    extractor_type: Literal["superpoint", "aliked", "disk"] = "superpoint"
+    extractor_type: Literal["superpoint", "aliked", "disk"] = "aliked"
     max_keypoints: int = 2048
     detection_threshold: float = 0.005
     clahe_enabled: bool = False
@@ -298,7 +298,7 @@ class RuntimeConfig(BaseModel):
 
     # Benchmark
     benchmark_extractors: list[str] = Field(
-        default_factory=lambda: ["superpoint", "aliked", "disk"]
+        default_factory=lambda: ["aliked", "disk", "superpoint"]
     )
     benchmark_clahe: list[bool] = Field(default_factory=lambda: [True, False])
 
@@ -371,7 +371,7 @@ class PipelineConfig(BaseModel):
     # Optional with defaults
     mask_dir: str | None = None
     pipeline_mode: Literal["sparse", "full"] = "full"
-    matcher_type: Literal["lightglue", "roma"] = "lightglue"
+    matcher_type: Literal["lightglue", "roma"] = "roma"
     quality_preset: QualityPreset | None = None
 
     # Sub-configs

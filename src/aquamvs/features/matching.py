@@ -8,9 +8,7 @@ from lightglue import LightGlue
 from ..config import SparseMatchingConfig
 
 
-def create_matcher(
-    extractor_type: str = "superpoint", device: str = "cpu"
-) -> LightGlue:
+def create_matcher(extractor_type: str = "aliked", device: str = "cpu") -> LightGlue:
     """Create and initialize a LightGlue feature matcher.
 
     Args:
@@ -59,7 +57,7 @@ def match_pair(
     config: SparseMatchingConfig,
     matcher: LightGlue | None = None,
     device: str = "cpu",
-    extractor_type: str = "superpoint",
+    extractor_type: str = "aliked",
 ) -> dict[str, torch.Tensor]:
     """Match features between a reference and source image pair.
 
@@ -123,7 +121,7 @@ def match_all_pairs(
     image_size: tuple[int, int],
     config: SparseMatchingConfig,
     device: str = "cpu",
-    extractor_type: str = "superpoint",
+    extractor_type: str = "aliked",
 ) -> dict[tuple[str, str], dict[str, torch.Tensor]]:
     """Match features for all selected camera pairs.
 

@@ -70,7 +70,7 @@ class TestSparseMatchingConfig:
         """Test default values."""
         config = SparseMatchingConfig()
         # Feature extraction
-        assert config.extractor_type == "superpoint"
+        assert config.extractor_type == "aliked"
         assert config.max_keypoints == 2048
         assert config.detection_threshold == 0.005
         assert config.clahe_enabled is False
@@ -242,7 +242,7 @@ class TestRuntimeConfig:
         assert config.viz_enabled is False
         assert config.viz_stages == []
         # Benchmark
-        assert config.benchmark_extractors == ["superpoint", "aliked", "disk"]
+        assert config.benchmark_extractors == ["aliked", "disk", "superpoint"]
         assert config.benchmark_clahe == [True, False]
         # Evaluation
         assert config.icp_max_distance == 0.01
@@ -309,7 +309,7 @@ class TestPipelineConfig:
         assert config.camera_input_map == {}
         assert config.mask_dir is None
         assert config.pipeline_mode == "full"
-        assert config.matcher_type == "lightglue"
+        assert config.matcher_type == "roma"
         # Sub-configs should be initialized
         assert isinstance(config.preprocessing, PreprocessingConfig)
         assert isinstance(config.sparse_matching, SparseMatchingConfig)
@@ -348,7 +348,7 @@ class TestPipelineConfig:
         """Test that all sub-configs have correct defaults."""
         config = PipelineConfig()
         assert config.preprocessing.color_norm_enabled is False
-        assert config.sparse_matching.extractor_type == "superpoint"
+        assert config.sparse_matching.extractor_type == "aliked"
         assert config.dense_matching.certainty_threshold == 0.5
         assert config.reconstruction.num_depths == 128
         assert config.runtime.device == "cpu"
@@ -515,7 +515,7 @@ runtime:
 
         # Unspecified configs should be all defaults
         assert loaded.preprocessing.frame_start == 0
-        assert loaded.sparse_matching.extractor_type == "superpoint"
+        assert loaded.sparse_matching.extractor_type == "aliked"
 
     def test_empty_yaml_loads_as_defaults(self, tmp_path):
         """Test that loading an empty YAML file gives all defaults."""

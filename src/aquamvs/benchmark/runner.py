@@ -86,7 +86,7 @@ def build_pathways(
     def _make_config(
         matcher: str,
         mode: str,
-        extractor: str = "superpoint",
+        extractor: str = "aliked",
         clahe: bool = False,
     ) -> PipelineConfig:
         cfg = copy.deepcopy(base_config)

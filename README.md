@@ -83,4 +83,18 @@ Example dataset: https://doi.org/10.5281/zenodo.18702024
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+AquaMVS is released under the MIT License. See [LICENSE](LICENSE) for details.
+
+### Third-party components and commercial use
+
+AquaMVS vendors no third-party source code or model weights; all optional
+components are installed separately at the user's request. The out-of-the-box
+configuration is fully MIT/permissive: the default matcher is **RoMa v2** (MIT)
+and the default feature extractor is **ALIKED** (BSD-3-Clause).
+
+The optional **SuperPoint** extractor (reachable via LightGlue by setting
+`extractor_type: superpoint`) is provided under Magic Leap's non-commercial
+academic-research-only license. It is *not* a default. **Commercial users
+should select ALIKED (BSD-3) or DISK (Apache-2.0) instead of SuperPoint.**
+
+See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the full breakdown.
