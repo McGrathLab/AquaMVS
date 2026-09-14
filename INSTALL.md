@@ -28,13 +28,17 @@ pip install -r requirements-prereqs.txt
 **Manual install:**
 ```bash
 pip install git+https://github.com/cvg/LightGlue.git@edb2b83
-pip install git+https://github.com/Parskatt/RoMaV2.git@95c9968145c8906b7b59383258e9f73b02853d89
+pip install git+https://github.com/tlancaster6/RoMaV2.git@29ee4277d075e2ba7b309615343c709b314867bb
 ```
 
 Notes:
 - LightGlue is pinned to commit `edb2b83` (v0.2 release)
-- RoMa v2 is pinned to an upstream commit (`95c9968`) that includes the
-  dataclasses metadata fix; the earlier fork is no longer needed
+- RoMa v2 is pinned to our fork at `29ee427`: upstream v2.0.1 (which carries
+  the dataclasses metadata fix) plus a one-line GPU-memory fix. Upstream
+  loads the ~1 GB checkpoint with `map_location=device`, leaving two copies
+  of the model in VRAM at init (2211 MiB peak vs 1162 MiB with the fix) and
+  OOMing ROMA full mode on 12 GB cards. The loaded weights are bit-identical.
+  Revert to `Parskatt/RoMaV2` once the upstream PR lands.
 
 ## 3. Install AquaMVS
 

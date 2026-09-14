@@ -3,4 +3,14 @@
 # PyTorch must be installed separately from pytorch.org (see INSTALL.md)
 
 git+https://github.com/cvg/LightGlue.git@edb2b83
-git+https://github.com/Parskatt/RoMaV2.git@95c9968145c8906b7b59383258e9f73b02853d89
+
+# RoMa v2.0.1 plus a one-line GPU-memory fix, from our fork.
+# Upstream v2.0.1 loads the ~1 GB checkpoint with map_location=device, so on
+# CUDA the full state dict is materialized in VRAM while self.to(device) has
+# already placed the model -- two copies resident at once. Measured at init on
+# an RTX 4070 Ti: 2211 MiB peak vs 1162 MiB with the fix. That extra ~1 GB is
+# enough to OOM ROMA full mode on a 12 GB card.
+# The loaded weights are bit-identical; this is a memory fix only.
+# Upstream PR: https://github.com/Parskatt/RoMaV2/pull/50
+# Revert to Parskatt/RoMaV2 at the merge commit once that PR lands.
+git+https://github.com/tlancaster6/RoMaV2.git@29ee4277d075e2ba7b309615343c709b314867bb
