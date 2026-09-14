@@ -3,13 +3,13 @@
 import copy
 import gc
 import logging
-import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
 import torch
 
 from ..config import PipelineConfig
+from ..cuda_alloc import configure_cuda_allocator
 from ..pipeline.visualization import run_visualization_pass
 from ..profiling.analyzer import ProfileReport
 from ..profiling.profiler import PipelineProfiler, set_active_profiler
@@ -201,12 +201,7 @@ def run_benchmark(
     # Reduce CUDA memory fragmentation across sequential pathway runs.
     # Without this, reserved-but-unallocated memory from earlier pathways
     # can prevent large contiguous allocations in later ones (e.g. RoMa full).
-    if torch.cuda.is_available():
-        _alloc_conf = os.environ.get("PYTORCH_CUDA_ALLOC_CONF", "")
-        if "expandable_segments" not in _alloc_conf:
-            os.environ["PYTORCH_CUDA_ALLOC_CONF"] = (
-                f"{_alloc_conf},expandable_segments:True".lstrip(",")
-            )
+    configure_cuda_allocator()
 
     config_path = Path(config_path)
     base_config = PipelineConfig.from_yaml(config_path)

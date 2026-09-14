@@ -11,6 +11,7 @@ from aquacal.io.video import VideoSet
 from tqdm import tqdm
 
 from ..config import PipelineConfig
+from ..cuda_alloc import configure_cuda_allocator
 from ..io import ImageDirectorySet, detect_input_type
 from .builder import build_pipeline_context
 from .context import PipelineContext
@@ -169,6 +170,8 @@ def run_pipeline(config: PipelineConfig) -> None:
     Args:
         config: Full pipeline configuration.
     """
+    configure_cuda_allocator()
+
     # One-time setup
     ctx = build_pipeline_context(config)
 

@@ -16,6 +16,7 @@ from aquamvs.calibration import (
     undistort_image,
 )
 from aquamvs.config import PipelineConfig
+from aquamvs.cuda_alloc import configure_cuda_allocator
 
 # Video file extensions to scan for
 VIDEO_EXTENSIONS = {".mp4", ".avi", ".mkv", ".mov"}
@@ -567,6 +568,8 @@ def export_mesh_command(args) -> None:
 
 def main() -> None:
     """Main entry point for the AquaMVS CLI."""
+    configure_cuda_allocator()
+
     parser = argparse.ArgumentParser(
         prog="aquamvs",
         description="Multi-view stereo reconstruction of underwater surfaces with refraction modeling.",
