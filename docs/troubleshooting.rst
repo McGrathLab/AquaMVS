@@ -151,7 +151,7 @@ Dataset download fails
 
    **Solution:** Verify network connectivity and try the download manually::
 
-       wget https://zenodo.org/records/18702024/files/aquamvs-example-dataset.zip
+       wget https://zenodo.org/records/18725007/files/aquamvs-example-dataset.zip
 
    If the URL returns a 404 error, check the
    `GitHub Releases page <https://github.com/McGrathLab/AquaMVS/releases>`_
