@@ -26,7 +26,9 @@ classifiers = [
 
 dependencies = [
     "kornia>=0.7.0",
-    "open3d>=0.18.0",
+    # <0.20: open3d 0.20.0's Linux wheel links libEGL.so.1 at import time, so
+    # `import aquamvs` fails on headless machines without it (incl. CI runners).
+    "open3d>=0.18.0,<0.20",
     "opencv-python>=4.6.0",
     "numpy>=1.24.0",
     "scipy>=1.10.0",
