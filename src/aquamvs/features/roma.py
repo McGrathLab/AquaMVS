@@ -13,6 +13,27 @@ from ..config import DenseMatchingConfig
 logger = logging.getLogger(__name__)
 
 
+def _set_roma_device(device: str) -> None:
+    """Point RoMa v2's module-level device at the requested device.
+
+    RoMa v2 picks a global device at import (CUDA if available) and uses it at
+    run time for input placement, autocast and sampling grids, independent of
+    where the model lives. Without this, ``device: cpu`` on a machine with a
+    GPU fails with a CUDA-input / CPU-weight mismatch. The setting is
+    process-wide, so all RoMa matchers in one process share a device.
+    """
+    import sys
+
+    target = torch.device(device)
+    for name, module in list(sys.modules.items()):
+        if name != "romav2" and not name.startswith("romav2."):
+            continue
+        current = getattr(module, "device", None)
+        if isinstance(current, torch.device) and current != target:
+            logger.debug("Setting %s.device: %s -> %s", name, current, target)
+            module.device = target
+
+
 def create_roma_matcher(
     device: str = "cpu",
     anchor_width: int = 512,
@@ -29,6 +50,7 @@ def create_roma_matcher(
     Returns:
         Initialized RoMa v2 model in eval mode.
     """
+    _set_roma_device(device)
     # Disable compilation to avoid Triton issues on Windows
     cfg = RoMaV2.Cfg(
         compile=False, anchor_width=anchor_width, anchor_height=anchor_height
