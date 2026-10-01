@@ -4,10 +4,10 @@ import logging
 from pathlib import Path
 
 import cv2
+import matplotlib
 import numpy as np
 import open3d as o3d
 import torch
-from matplotlib import cm
 from scipy.interpolate import griddata
 
 from ..config import PipelineConfig
@@ -57,7 +57,7 @@ def _save_consistency_map(
 
     # Colormapped PNG for visual inspection
     # Normalize by number of source cameras, not per-frame max
-    cmap = cm.get_cmap("viridis")
+    cmap = matplotlib.colormaps["viridis"]
     normalized = consistency_np.astype(float) / max(max_value, 1)
     colored = cmap(normalized)  # (H, W, 4) RGBA float [0, 1]
     colored_bgr = (colored[:, :, :3][:, :, ::-1] * 255).astype(np.uint8)
