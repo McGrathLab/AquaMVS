@@ -60,7 +60,7 @@ dev = [
 Repository = "https://github.com/McGrathLab/AquaMVS"
 Documentation = "https://aquamvs.readthedocs.io/"
 "Bug Tracker" = "https://github.com/McGrathLab/AquaMVS/issues"
-Changelog = "https://github.com/McGrathLab/AquaMVS/blob/main/CHANGELOG.md"
+Changelog = "https://github.com/McGrathLab/AquaMVS/releases"
 
 [project.scripts]
 aquamvs = "aquamvs.cli:main"
@@ -74,6 +74,7 @@ include-package-data = false
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
+version_variables = ["CITATION.cff:version"]
 branch = "main"
 commit_message = "chore(release): {version}"
 build_command = "pip install build && python -m build"

@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use AquaMVS in your research, please cite it as below."
+type: software
+title: "AquaMVS: Multi-view stereo reconstruction of underwater surfaces with refractive modeling"
+authors:
+  - family-names: Lancaster
+    given-names: Tucker
+version: 1.7.3
+license: MIT
+repository-code: "https://github.com/McGrathLab/AquaMVS"
+url: "https://aquamvs.readthedocs.io/"
+keywords:
+  - multi-view stereo
+  - underwater
+  - refraction
+  - computer vision
+  - depth estimation
+references:
+  - type: data
+    title: "AquaMVS example dataset"
+    doi: 10.5281/zenodo.18702024
+    authors:
+      - family-names: Lancaster
+        given-names: Tucker
+  - type: data
+    title: "AquaMVS ground-truth validation dataset"
+    doi: 10.5281/zenodo.21134748
+    authors:
+      - family-names: Lancaster
+        given-names: Tucker
+  - type: software
+    title: "AquaMVS_gtanalysis"
+    repository-code: "https://github.com/McGrathLab/AquaMVS_gtanalysis"
+    authors:
+      - family-names: Lancaster
+        given-names: Tucker

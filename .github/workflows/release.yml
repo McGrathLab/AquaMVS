@@ -30,4 +30,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
-          semantic-release version
+          # Release notes go to GitHub Releases; no CHANGELOG.md is kept in the repo
+          semantic-release version --no-changelog
