@@ -1,16 +1,14 @@
 # Git-based prerequisites for AquaMVS
-# Install these BEFORE installing aquamvs
-# PyTorch must be installed separately from pytorch.org (see INSTALL.md)
+# Install these BEFORE installing aquamvs, and AFTER PyTorch (see INSTALL.md):
+#
+#   pip install -r requirements-prereqs.txt
+#   pip install --no-deps -r requirements-romav2.txt
+#
+# RoMa v2 lives in its own file because it must be installed --no-deps (see there).
 
 git+https://github.com/cvg/LightGlue.git@edb2b83
 
-# RoMa v2.0.1 plus a one-line GPU-memory fix, from our fork.
-# Upstream v2.0.1 loads the ~1 GB checkpoint with map_location=device, so on
-# CUDA the full state dict is materialized in VRAM while self.to(device) has
-# already placed the model -- two copies resident at once. Measured at init on
-# an RTX 4070 Ti: 2211 MiB peak vs 1162 MiB with the fix. That extra ~1 GB is
-# enough to OOM ROMA full mode on a 12 GB card.
-# The loaded weights are bit-identical; this is a memory fix only.
-# Upstream PR: https://github.com/Parskatt/RoMaV2/pull/50
-# Revert to Parskatt/RoMaV2 at the merge commit once that PR lands.
-git+https://github.com/tlancaster6/RoMaV2.git@29ee4277d075e2ba7b309615343c709b314867bb
+# RoMa v2's runtime dependencies (it is installed --no-deps). torch, torchvision,
+# pillow and tqdm come from PyTorch and AquaMVS; rich is optional (log formatting).
+einops>=0.8.1
+rich>=14.2.0

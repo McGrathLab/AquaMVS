@@ -1,0 +1,21 @@
+# RoMa v2, installed WITHOUT its declared dependencies:
+#
+#   pip install --no-deps -r requirements-romav2.txt
+#
+# RoMa v2 declares torchvision>=0.23.0 and fused-local-corr. Resolving those makes pip
+# replace the torch you installed from pytorch.org with PyPI's default build (a CUDA 13
+# build that needs NVIDIA driver 580+, so older drivers silently lose the GPU), and
+# pulls fused-local-corr, whose CUDA kernel is only importable under the one torch
+# version each release pins. AquaMVS's results use RoMa's native-torch correlation,
+# with no fused-local-corr. Its runtime dependencies are in requirements-prereqs.txt.
+#
+# RoMa v2.0.1 plus a one-line GPU-memory fix, from our fork.
+# Upstream v2.0.1 loads the ~1 GB checkpoint with map_location=device, so on
+# CUDA the full state dict is materialized in VRAM while self.to(device) has
+# already placed the model -- two copies resident at once. Measured at init on
+# an RTX 4070 Ti: 2211 MiB peak vs 1162 MiB with the fix. That extra ~1 GB is
+# enough to OOM ROMA full mode on a 12 GB card.
+# The loaded weights are bit-identical; this is a memory fix only.
+# Upstream PR: https://github.com/Parskatt/RoMaV2/pull/50
+# Revert to Parskatt/RoMaV2 at the merge commit once that PR lands.
+romav2 @ git+https://github.com/tlancaster6/RoMaV2.git@29ee4277d075e2ba7b309615343c709b314867bb

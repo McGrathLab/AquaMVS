@@ -9,6 +9,7 @@ build:
     - pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
     # Install git prerequisites (LightGlue, RoMa)
     - pip install -r requirements-prereqs.txt
+    - pip install --no-deps -r requirements-romav2.txt
     # Install AquaMVS with dev dependencies (includes Sphinx, Furo, etc.)
     - pip install -e ".[dev]"
     # Build documentation
