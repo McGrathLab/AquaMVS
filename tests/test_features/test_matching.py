@@ -18,6 +18,9 @@ from aquamvs.features.matching import (
     save_matches,
 )
 
+# LightGlue's input dim for ALIKED, the default extractor used by match_pair
+ALIKED_DESC_DIM = 128
+
 
 def test_save_load_roundtrip():
     """Test saving and loading matches dict."""
@@ -241,7 +244,7 @@ def test_match_all_pairs_structure():
     def make_features(n_keypoints):
         return {
             "keypoints": torch.rand(n_keypoints, 2) * 100,
-            "descriptors": torch.randn(n_keypoints, 256),
+            "descriptors": torch.randn(n_keypoints, ALIKED_DESC_DIM),
             "scores": torch.rand(n_keypoints),
         }
 
@@ -296,13 +299,13 @@ def test_integration_with_lightglue(device):
 
     feats_ref = {
         "keypoints": torch.rand(50, 2) * 1600,  # Random keypoints in image space
-        "descriptors": torch.randn(50, 256),
+        "descriptors": torch.randn(50, ALIKED_DESC_DIM),
         "scores": torch.rand(50),
     }
 
     feats_src = {
         "keypoints": torch.rand(40, 2) * 1600,
-        "descriptors": torch.randn(40, 256),
+        "descriptors": torch.randn(40, ALIKED_DESC_DIM),
         "scores": torch.rand(40),
     }
 
@@ -351,19 +354,19 @@ def test_matcher_reuse():
     # Create features
     feats1 = {
         "keypoints": torch.rand(30, 2) * 1600,
-        "descriptors": torch.randn(30, 256),
+        "descriptors": torch.randn(30, ALIKED_DESC_DIM),
         "scores": torch.rand(30),
     }
 
     feats2 = {
         "keypoints": torch.rand(25, 2) * 1600,
-        "descriptors": torch.randn(25, 256),
+        "descriptors": torch.randn(25, ALIKED_DESC_DIM),
         "scores": torch.rand(25),
     }
 
     feats3 = {
         "keypoints": torch.rand(35, 2) * 1600,
-        "descriptors": torch.randn(35, 256),
+        "descriptors": torch.randn(35, ALIKED_DESC_DIM),
         "scores": torch.rand(35),
     }
 
@@ -405,13 +408,13 @@ def test_threshold_filtering():
 
     feats_ref = {
         "keypoints": torch.rand(50, 2) * 1600,
-        "descriptors": torch.randn(50, 256),
+        "descriptors": torch.randn(50, ALIKED_DESC_DIM),
         "scores": torch.rand(50),
     }
 
     feats_src = {
         "keypoints": torch.rand(40, 2) * 1600,
-        "descriptors": torch.randn(40, 256),
+        "descriptors": torch.randn(40, ALIKED_DESC_DIM),
         "scores": torch.rand(40),
     }
 
@@ -452,7 +455,7 @@ def test_match_all_pairs_dedup():
     def make_features(n_keypoints):
         return {
             "keypoints": torch.rand(n_keypoints, 2) * 1600,
-            "descriptors": torch.randn(n_keypoints, 256),
+            "descriptors": torch.randn(n_keypoints, ALIKED_DESC_DIM),
             "scores": torch.rand(n_keypoints),
         }
 
@@ -500,7 +503,7 @@ def test_match_all_pairs_canonical_order():
     def make_features(n_keypoints):
         return {
             "keypoints": torch.rand(n_keypoints, 2) * 1600,
-            "descriptors": torch.randn(n_keypoints, 256),
+            "descriptors": torch.randn(n_keypoints, ALIKED_DESC_DIM),
             "scores": torch.rand(n_keypoints),
         }
 
@@ -538,7 +541,7 @@ def test_match_all_pairs_no_self_pairs():
     def make_features(n_keypoints):
         return {
             "keypoints": torch.rand(n_keypoints, 2) * 100,
-            "descriptors": torch.randn(n_keypoints, 256),
+            "descriptors": torch.randn(n_keypoints, ALIKED_DESC_DIM),
             "scores": torch.rand(n_keypoints),
         }
 

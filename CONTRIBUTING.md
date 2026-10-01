@@ -20,6 +20,7 @@ Thank you for your interest in contributing to AquaMVS. This guide will help you
    ```bash
    pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
    pip install -r requirements-prereqs.txt
+   pip install --no-deps -r requirements-romav2.txt
    pip install -e ".[dev]"
    ```
 
@@ -129,11 +130,9 @@ When deprecating functionality in AquaMVS:
        # existing implementation
    ```
 
-2. **Document in CHANGELOG.md** under the "Deprecated" category:
-   ```markdown
-   ### Deprecated
-   - `old_function()` - Use `new_function()` instead (will be removed in 1.4.0)
-   ```
+2. **Note the deprecation in the commit message** (e.g. a `feat:` or `fix:` commit body
+   naming the replacement and the removal version), so it appears in the release notes
+   that semantic-release writes to [GitHub Releases](https://github.com/McGrathLab/AquaMVS/releases).
 
 3. **Maintain for at least 2 minor versions** before removal.
 

@@ -16,7 +16,7 @@
 Multi-view-stereo (MVS) reconstruction of underwater surfaces viewed through a flat water surface, with Snell's law refraction modeling.
 
 ## Status
-**v1.3.5 released.** AquaMVS is feature-complete for the v1.0 milestone and available on [PyPI](https://pypi.org/project/aquamvs/). The API is considered stable; breaking changes will follow semantic versioning.
+AquaMVS is available on [PyPI](https://pypi.org/project/aquamvs/). The API is considered stable; breaking changes will follow semantic versioning.
 
 ## What it does
 
@@ -53,8 +53,10 @@ Quick summary:
 # 1. Install PyTorch from pytorch.org
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 
-# 2. Install git-based prerequisites (LightGlue, RoMa v2)
+# 2. Install git-based prerequisites (LightGlue, RoMa v2).
+#    RoMa v2 must be installed --no-deps, or pip replaces your torch (see INSTALL.md)
 pip install -r requirements-prereqs.txt
+pip install --no-deps -r requirements-romav2.txt
 
 # 3. Install AquaMVS (pulls AquaCal automatically)
 pip install aquamvs
@@ -71,15 +73,40 @@ Topics include:
 - Usage examples
 - Extension points for custom workflows
 
+## Validation
+
+AquaMVS's geometric accuracy has been validated against independent ChArUco
+calibration-board ground truth, recovered from the boards without using the MVS
+reconstruction it assesses. On the ground-truth set (13 cameras, 10 board poses,
+AquaMVS 1.7.2 with RoMa v2 and an AquaCal 2.1.0 calibration), the reconstruction gives:
+
+| Metric | Value |
+|---|---|
+| Board flatness (RMS) | 1.11 mm |
+| Rigid-fit corner error (inlier RMSE) | 1.08 mm |
+| Lateral / range error (RMS) | 0.53 / 1.78 mm |
+| Absolute scale error | +0.064 % |
+
+- Analysis code, reproducing every figure and number in the paper:
+  [McGrathLab/AquaMVS_gtanalysis](https://github.com/McGrathLab/AquaMVS_gtanalysis)
+- Ground-truth dataset: [10.5281/zenodo.21134748](https://doi.org/10.5281/zenodo.21134748)
+
+AquaMVS 1.7.3 reproduces the 1.7.2 reconstruction bit for bit (checked on the
+ground-truth set's first frame); its changes are to installation, headless rendering and
+CPU device handling.
+
 ## Citation
 
-If you use AquaMVS in your research, please cite:
+If you use AquaMVS in your research, please cite the software (machine-readable
+metadata in [CITATION.cff](CITATION.cff); GitHub's "Cite this repository" button uses it):
 
 ```
-Lancaster, T. (2026). AquaMVS: Multi-view stereo reconstruction with refractive geometry.
-GitHub: https://github.com/McGrathLab/AquaMVS
+Lancaster, T. (2026). AquaMVS: Multi-view stereo reconstruction of underwater surfaces
+with refractive modeling [Computer software]. https://github.com/McGrathLab/AquaMVS
 Example dataset: https://doi.org/10.5281/zenodo.18702024
 ```
+
+A paper describing AquaMVS is under review; this section will cite it once published.
 
 ## License
 

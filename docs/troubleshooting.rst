@@ -39,10 +39,13 @@ LightGlue or RoMa import errors
    **Solution:** These packages are not available on PyPI and must be installed
    directly from their repositories::
 
-       pip install git+https://github.com/cvg/LightGlue.git@edb2b83
-       pip install git+https://github.com/Parskatt/RoMaV2.git
+       pip install git+https://github.com/cvg/LightGlue.git@edb2b83 einops rich
+       pip install --no-deps git+https://github.com/tlancaster6/RoMaV2.git@29ee4277d075e2ba7b309615343c709b314867bb
 
    Both commands require git to be installed and network access to GitHub.
+   Keep ``--no-deps`` on the RoMa v2 install: without it, pip replaces your
+   PyTorch build while resolving RoMa's declared dependencies (see
+   :doc:`installation`).
 
 CUDA version mismatch
    **Problem:** ``RuntimeError: CUDA error: no kernel image is available for
@@ -138,8 +141,8 @@ ModuleNotFoundError in Colab
    installation cell at the top of the notebook::
 
        !pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121 -q
-       !pip install git+https://github.com/cvg/LightGlue.git@edb2b83 -q
-       !pip install git+https://github.com/Parskatt/RoMaV2.git -q
+       !pip install git+https://github.com/cvg/LightGlue.git@edb2b83 einops rich -q
+       !pip install --no-deps git+https://github.com/tlancaster6/RoMaV2.git@29ee4277d075e2ba7b309615343c709b314867bb -q
        !pip install aquamvs -q
 
    After running the installation cell, restart the Colab runtime
@@ -149,13 +152,10 @@ Dataset download fails
    **Problem:** The dataset download cell fails with a network error or the
    downloaded archive is corrupted.
 
-   **Solution:** Verify network connectivity and try the download manually::
-
-       wget https://zenodo.org/records/18725007/files/aquamvs-example-dataset.zip
-
-   If the URL returns a 404 error, check the
-   `GitHub Releases page <https://github.com/McGrathLab/AquaMVS/releases>`_
-   for the current download URL — the release tag may have changed.
+   **Solution:** Verify network connectivity, then download
+   ``aquamvs-example-dataset.zip`` manually from the dataset's Zenodo page,
+   https://doi.org/10.5281/zenodo.18702024 (this DOI always resolves to the
+   latest version), and unzip it next to the notebook.
 
 Open3D visualization fails headless
    **Problem:** Open3D ``draw_geometries`` raises an error or hangs in a

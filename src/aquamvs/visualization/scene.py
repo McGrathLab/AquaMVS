@@ -25,19 +25,17 @@ def _offscreen_available() -> bool:
     # 1. A display server (DISPLAY set), or
     # 2. EGL headless support (not always available)
     # Without these, instantiation segfaults at C-level before Python can catch it.
-    # Skip the probe on headless Linux to avoid crashes during pytest collection.
+    # Skip the probe entirely on headless CI; elsewhere without a display
+    # (e.g. a headless GPU box with EGL), probe in a subprocess so a crash
+    # only takes down the child.
     import platform
 
     if platform.system() == "Linux" and not os.environ.get("DISPLAY"):
-        # No display - check if we're in CI or explicitly headless
         ci_markers = ["CI", "GITHUB_ACTIONS", "TRAVIS", "CIRCLECI"]
         if any(os.environ.get(marker) for marker in ci_markers):
             logger.debug("Skipping OffscreenRenderer probe on headless CI (no DISPLAY)")
             return False
-
-        # Not in known CI, but still no DISPLAY - be cautious
-        logger.debug("Skipping OffscreenRenderer probe on Linux without DISPLAY")
-        return False
+        return _offscreen_probe_subprocess()
 
     devnull_fd = os.open(os.devnull, os.O_WRONLY)
     old_fd = os.dup(2)
@@ -52,6 +50,39 @@ def _offscreen_available() -> bool:
         os.dup2(old_fd, 2)
         os.close(old_fd)
         os.close(devnull_fd)
+
+
+def _offscreen_probe_subprocess(timeout: float = 60.0) -> bool:
+    """Probe OffscreenRenderer (EGL headless) in a child process.
+
+    Used on Linux without a display server, where a failed instantiation
+    can segfault. A crash then only costs the child, while machines with
+    working EGL headless rendering still get rendered output.
+    """
+    import subprocess
+    import sys
+
+    code = (
+        "import open3d as o3d\n"
+        "r = o3d.visualization.rendering.OffscreenRenderer(64, 64)\n"
+        "del r\n"
+    )
+    try:
+        result = subprocess.run(
+            [sys.executable, "-c", code],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=timeout,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        logger.debug("OffscreenRenderer subprocess probe could not complete")
+        return False
+    ok = result.returncode == 0
+    logger.debug(
+        "OffscreenRenderer subprocess probe (no DISPLAY): %s",
+        "ok" if ok else f"failed (exit {result.returncode})",
+    )
+    return ok
 
 
 def _legacy_visualizer_available() -> bool:

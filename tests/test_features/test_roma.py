@@ -275,6 +275,29 @@ class TestApplyMaskToCorrespondences:
         assert filtered["scores"].shape == (0,)
 
 
+def test_create_roma_matcher_sets_roma_global_device(monkeypatch):
+    """RoMa's module-level device must follow the requested device.
+
+    Regression: RoMa v2 picks CUDA at import when available, so device="cpu"
+    on a GPU machine sent CUDA inputs to CPU weights.
+    """
+    import sys
+    import types
+
+    roma_mod = types.ModuleType("romav2._fake_submodule")
+    roma_mod.device = torch.device("cuda")
+    other_mod = types.ModuleType("not_romav2")
+    other_mod.device = torch.device("cuda")
+    monkeypatch.setitem(sys.modules, "romav2._fake_submodule", roma_mod)
+    monkeypatch.setitem(sys.modules, "not_romav2", other_mod)
+
+    with patch("aquamvs.features.roma.RoMaV2"):
+        create_roma_matcher(device="cpu")
+
+    assert roma_mod.device == torch.device("cpu")
+    assert other_mod.device == torch.device("cuda")
+
+
 @pytest.mark.slow
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="RoMa requires CUDA")
 def test_create_roma_matcher():

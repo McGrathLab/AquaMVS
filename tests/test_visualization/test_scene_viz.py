@@ -364,3 +364,52 @@ class TestOffscreenUnavailable:
         render_geometry(pcd, eye, center, up, output_path)
 
         assert not output_path.exists()
+
+
+class TestHeadlessProbe:
+    """Tests for the offscreen probe on Linux without DISPLAY."""
+
+    @pytest.fixture
+    def headless_linux(self, monkeypatch):
+        import platform
+
+        monkeypatch.setattr(platform, "system", lambda: "Linux")
+        monkeypatch.delenv("DISPLAY", raising=False)
+        for marker in ("CI", "GITHUB_ACTIONS", "TRAVIS", "CIRCLECI"):
+            monkeypatch.delenv(marker, raising=False)
+
+    def test_headless_uses_subprocess_probe(self, headless_linux, monkeypatch):
+        import aquamvs.visualization.scene as scene_module
+
+        calls = []
+
+        def fake_probe(*args, **kwargs):
+            calls.append(True)
+            return True
+
+        monkeypatch.setattr(scene_module, "_offscreen_probe_subprocess", fake_probe)
+        assert scene_module._offscreen_available() is True
+        assert calls == [True]
+
+    def test_headless_ci_skips_probe(self, headless_linux, monkeypatch):
+        import aquamvs.visualization.scene as scene_module
+
+        monkeypatch.setenv("CI", "true")
+        monkeypatch.setattr(
+            scene_module,
+            "_offscreen_probe_subprocess",
+            lambda *a, **k: pytest.fail("probe must not run on CI"),
+        )
+        assert scene_module._offscreen_available() is False
+
+    def test_subprocess_probe_reports_crash(self, monkeypatch):
+        import subprocess
+
+        import aquamvs.visualization.scene as scene_module
+
+        monkeypatch.setattr(
+            subprocess,
+            "run",
+            lambda *a, **k: subprocess.CompletedProcess(a, returncode=-11),
+        )
+        assert scene_module._offscreen_probe_subprocess() is False

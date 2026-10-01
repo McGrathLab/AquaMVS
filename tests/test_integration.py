@@ -215,9 +215,11 @@ def build_synthetic_scene(tmp_path):
         PairSelectionConfig(num_neighbors=2, include_center=False),
     )
 
-    # Pipeline config with relaxed parameters for speed and synthetic data
+    # Pipeline config with relaxed parameters for speed and synthetic data.
+    # LightGlue pathway: the RoMa default is impractically slow on CPU.
     config = PipelineConfig(
         output_dir=str(tmp_path / "output"),
+        matcher_type="lightglue",
         reconstruction=ReconstructionConfig(
             num_depths=16,
             window_size=5,

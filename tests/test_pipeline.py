@@ -25,7 +25,7 @@ from aquamvs.pipeline import (
     run_pipeline,
     setup_pipeline,
 )
-from aquamvs.pipeline.helpers import _should_viz
+from aquamvs.pipeline.helpers import _save_consistency_map, _should_viz
 
 
 @pytest.fixture
@@ -619,6 +619,25 @@ class TestShouldViz:
 # ---------------------------------------------------------------------------
 # Visualization integration tests
 # ---------------------------------------------------------------------------
+
+
+class TestSaveConsistencyMap:
+    """Tests for _save_consistency_map (regression: matplotlib 3.11 removed cm.get_cmap)."""
+
+    def test_writes_npz_and_png(self, tmp_path):
+        import cv2
+
+        consistency = torch.tensor([[0, 1], [2, 3]], dtype=torch.int32)
+        stem = tmp_path / "ref_cam"
+
+        _save_consistency_map(consistency, stem, max_value=3)
+
+        npz = np.load(stem.with_suffix(".npz"))
+        np.testing.assert_array_equal(npz["consistency"], consistency.numpy())
+        png = cv2.imread(str(stem.with_suffix(".png")))
+        assert png.shape == (2, 2, 3)
+        # Normalized by max_value, so the extremes map to distinct colors
+        assert not np.array_equal(png[0, 0], png[1, 1])
 
 
 class TestVizIntegration:
