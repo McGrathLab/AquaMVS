@@ -30,11 +30,27 @@ downloaded from Magic Leap / LightGlue only if the user explicitly selects
 
 | Component  | License    | Notes |
 |------------|------------|-------|
-| **RoMa v2** (default) | MIT   | Dense matching pathway |
+| **RoMa v2** (default) | MIT   | Dense matching pathway; code only, see DINOv3 below |
+| **DINOv3** (via RoMa v2) | DINOv3 License (Meta, custom) | RoMa v2's default backbone |
 | LightGlue  | Apache-2.0 | Sparse matching pathway |
+
+**DINOv3** is not MIT-licensed. RoMa v2's default feature backbone
+(`dinov3_vitl16`) is downloaded at runtime from
+[facebookresearch/dinov3](https://github.com/facebookresearch/dinov3) via
+`torch.hub`, and a few modules inside the `romav2` package (`romav2/vit/`)
+are themselves under the DINOv3 License. AquaMVS ships no DINOv3 code or
+weights. The [DINOv3 License](https://github.com/facebookresearch/dinov3/blob/main/LICENSE.md)
+permits commercial use and modification, but it is not an open-source license:
+
+- publications of results obtained using DINOv3 must acknowledge it;
+- use must comply with sanctions and export controls, and military, weapons,
+  and ITAR-regulated uses are prohibited;
+- anyone redistributing DINOv3 must include a copy of the license.
+
+Because RoMa v2 is the default matcher, every default AquaMVS run uses DINOv3.
 
 ## Other dependencies
 
-All remaining runtime dependencies (PyTorch, kornia, Open3D, OpenCV, NumPy,
+Apart from DINOv3 (above), all remaining runtime dependencies (PyTorch, kornia, Open3D, OpenCV, NumPy,
 SciPy, PyYAML, matplotlib, pydantic, tqdm, tabulate, AquaCal) are distributed
 under permissive licenses (BSD, MIT, or Apache-2.0).
